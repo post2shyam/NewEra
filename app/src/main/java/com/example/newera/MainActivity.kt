@@ -17,8 +17,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun intUi() {
+        var number  = 0
         binding.button.setOnClickListener {
-            Toast.makeText(this, "Button Pressed", Toast.LENGTH_SHORT).show()
+            binding.textView.text = (++number).toString()
         }
     }
 }
