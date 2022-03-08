@@ -1,11 +1,24 @@
 package com.example.newera
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.newera.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        intUi()
+    }
+
+    private fun intUi() {
+        binding.button.setOnClickListener {
+            Toast.makeText(this, "Button Pressed", Toast.LENGTH_SHORT).show()
+        }
     }
 }
