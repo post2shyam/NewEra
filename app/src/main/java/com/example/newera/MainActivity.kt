@@ -1,7 +1,9 @@
 package com.example.newera
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.newera.databinding.ActivityMainBinding
 
@@ -15,12 +17,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableViewBinding()
         attachViewModel()
-        refreshUi()
-        attachUiListeners()
+        attachListeners()
     }
 
     private fun attachViewModel() {
-        viewModel =  ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
     }
 
     private fun enableViewBinding() {
@@ -28,14 +29,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun refreshUi() {
-        binding.textView.text = viewModel.number.toString()
-    }
+    private fun attachListeners() {
+        //Update on every tick
+        viewModel.seconds.observe(this, Observer {
+            binding.textView.text = it.toString()
+        })
 
-    private fun attachUiListeners() {
-        binding.button.setOnClickListener {
-            viewModel.addNumber()
-            refreshUi()
+        //Update on timer finished
+        viewModel.finished.observe(this, Observer {
+            Toast.makeText(this, "Countdown finished", Toast.LENGTH_SHORT).show()
+        })
+
+        binding.start.setOnClickListener {
+            viewModel.startTimer()
+        }
+
+        binding.stop.setOnClickListener {
+            viewModel.stopTimer()
         }
     }
 }
